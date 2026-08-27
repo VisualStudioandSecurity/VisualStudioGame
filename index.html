@@ -31478,8 +31478,7 @@
 <html lang="pt-BR" class="h-full">
  <head>
   <!-- SDK Oficial do Google Identity -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script>
+<script>
     const API_URL = 'https://fuzzy-pancake-jjj5j6xjp9x6fqvvr-3000.app.github.dev';
 
     function handleCredentialResponse(response) {
@@ -31499,7 +31498,33 @@
         }).join(''));
         return JSON.parse(jsonPayload);
     }
-    </script>
+
+    async function addCredits() {
+        if (!window.googleToken) {
+            alert('Por favor, faça login com o Google primeiro.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/api/credits`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: window.googleToken, amount: 1000 })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                document.getElementById('user-coins').innerText = data.credits;
+                alert('1000 créditos adicionados com sucesso!');
+            } else {
+                alert('Erro ao adicionar créditos: ' + (data.error || 'Erro desconhecido'));
+            }
+        } catch (error) {
+            console.error('Erro de conexão:', error);
+            alert('Não foi possível conectar ao servidor no Codespaces.');
+        }
+    }
+</script>
   <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-adsense-account" content="ca-pub-4389870681468404">

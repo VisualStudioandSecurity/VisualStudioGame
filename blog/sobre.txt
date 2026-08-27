@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Técnico - Visual Studio Games</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans antialiased">
+
+    <header class="bg-gray-900 text-white p-6 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">Visual Studio Games</h1>
+            <nav>
+                <a href="index.html" class="text-gray-300 hover:text-white px-3">Voltar para o Hub</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto mt-10 px-4 md:px-0 max-w-4xl">
+        <div class="bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h1 class="text-4xl font-extrabold border-b-2 border-gray-200 pb-4 mb-8">Blog de Engenharia e Desenvolvimento</h1>
+
+            <article class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Otimização de Performance e Latência em Jogos Web 2D</h2>
+                <p class="text-sm text-gray-500 mb-4">Publicado pela equipe de Engenharia</p>
+                <p class="mb-4">Desenvolver jogos que rodam diretamente no navegador exige um controle rigoroso de recursos de hardware. Diferente de aplicações desktop, o ambiente web compartilha memória com múltiplas abas e processos do navegador. Ao construir títulos <em>endless runner</em> em 2D, a gestão eficiente dos sprites e a detecção de colisão são pontos críticos para evitar gargalos na CPU.</p>
+                <p class="mb-4">A nossa abordagem foca na lógica de eventos contínuos, garantindo que o ciclo de atualização (<em>update loop</em>) mantenham-se estáveis em dispositivos menos favoráveis. Isso é especialmente vital para jogadores que utilizam dispositivos com baixo desempemho. Ao otimizar o <em>garbage collector</em> do JavaScript e focar na renderização limpa no Canvas, conseguimos reduzir a latência de input (<em>input lag</em>) para níveis exelentes, permitindo respostas instantâneas ao toque de teclado ou clique do mouse.</p>
+            </article>
+
+            <article class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Arquitetura No-Code e Prototipagem Rápida na Criação de Jogos</h2>
+                <p class="text-sm text-gray-500 mb-4">Publicado pela equipe de Design e Lógica</p>
+                <p class="mb-4">A evolução dos motores de jogos modernos permitiu um salto na velocidade de produção. O uso de arquiteturas baseadas em eventos (sem necessidade de codificação linha a linha tradicional) acelera drasticamente a fase de prototipagem. Ao invés de escrever centenas de linhas de código para a gravidade de um personagem, utilizamos sistemas de nós e comportamentos pré-compilados.</p>
+                <p class="mb-4">Essa metodologia foi fundamental no desenvolvimento das nossas lógicas de colisão e movimentação procedural. A capacidade de testar mecânicas de física, instanciar objetos na tela dinamicamente e iterar sobre o design de fases em tempo real transforma a engenharia de software do jogo em um processo muito mais visual e ágil, garantindo entregas mais rápidas sem sacrificar a complexidade da lógica de estado (<em>game state</em>).</p>
+            </article>
+
+            <article class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-3">Cibersegurança e Proteção de Assets no Front-End</h2>
+                <p class="text-sm text-gray-500 mb-4">Publicado pela equipe de Segurança</p>
+                <p class="mb-4">Hospedar jogos na web traz desafios inerentes de segurança, visto que todo o código front-end (HTML5, JS, CSS) é entregue diretamente ao cliente. Proteger a propriedade intelectual, como os <em>assets</em> gráficos e a lógica de pontuação, requer protocolos específicos para evitar manipulação de memória ou injeção de scripts no console do navegador.</p>
+                <p class="mb-4">Implementamos técnicas de ofuscação de código e validação de estado para garantir que as requisições e a pontuação enviada aos nossos servidores mantenham sua integridade. A arquitetura de segurança atua de forma invisível, mitigando tentativas de engenharia reversa básica e garantindo que o placar e o ambiente de jogo permaneçam justos para todos os usuários da plataforma.</p>
+                <h2>Política de Privacidade - Visual Studio Games</h2>
+                <p>A sua privacidade é fundamental para nós. Esta Política de Privacidade descreve como a Visual Studio Games coleta, usa e protege as informações dos visitantes do nosso hub de jogos.</p>
+
+                <h3>Coleta de Dados e Publicidade</h3>
+                <p>Para manter nossos jogos gratuitos, utilizamos serviços de publicidade de terceiros, como o Google AdSense. Fornecedores de terceiros, incluindo o Google, usam cookies para veicular anúncios com base em visitas anteriores do usuário ao nosso website ou a outros websites na internet.</p>
+
+                <p>O uso de cookies de publicidade permite que o Google e seus parceiros veiculem anúncios para os usuários com base na navegação. Você pode desativar a publicidade personalizada acessando as Configurações de anúncios do Google.</p>
+
+                <h3>Segurança e Infraestrutura</h3>
+                <p>Como especialistas em tecnologia e cibersegurança, adotamos práticas rigorosas para proteger a integridade do nosso portal e garantir uma navegação segura. Não exigimos cadastro obrigatório para a maioria dos nossos jogos web e não compartilhamos dados sensíveis com entidades não autorizadas.</p>
+                </article>
+                <h2>Sobre a Visual Studio Games</h2>
+                <p>A <strong>Visual Studio Games</strong> é um estúdio digital especializado no desenvolvimento de software, design multimídia e criação de jogos interativos de alta performance. Nosso foco é entregar experiências web otimizadas, combinando interfaces de usuário (UI) responsivas com mecânicas de jogo eficientes.</p>
+
+                <p>Além do entretenimento, nossa infraestrutura é construída com rigorosos padrões de arquitetura de software e cibersegurança. Garantimos que nossas aplicações web sejam rápidas, seguras e escaláveis. Utilizamos desde motores de desenvolvimento ágil para prototipagem de jogos em 2D até integrações complexas de automação de processos, visando sempre a excelência técnica e a melhor experiência para o usuário final.</p>

@@ -31482,12 +31482,25 @@
     const API_URL = 'https://fuzzy-pancake-jjj5j6xjp9x6fqvvr-3000.app.github.dev';
 
     function handleCredentialResponse(response) {
-        const responsePayload = parseJwt(response.credential);
-        document.getElementById('g_id_onload').style.display = 'none';
-        document.querySelector('.g_id_signin').style.display = 'none';
-        document.getElementById('user-info').style.display = 'block';
-        document.getElementById('user-name').innerText = responsePayload.name;
+        // Salva o token globalmente para uso no botão
         window.googleToken = response.credential;
+        
+        const responsePayload = parseJwt(response.credential);
+        
+        // Atualiza elementos da interface se existirem
+        const gOnload = document.getElementById('g_id_onload');
+        if (gOnload) gOnload.style.display = 'none';
+        
+        const gSignin = document.querySelector('.g_id_signin');
+        if (gSignin) gSignin.style.display = 'none';
+        
+        const userInfo = document.getElementById('user-info');
+        if (userInfo) userInfo.style.display = 'block';
+        
+        const userName = document.getElementById('user-name');
+        if (userName) userName.innerText = responsePayload.name;
+
+        console.log("Login realizado com sucesso para:", responsePayload.name);
     }
 
     function parseJwt(token) {
@@ -31514,7 +31527,8 @@
 
             const data = await response.json();
             if (response.ok) {
-                document.getElementById('user-coins').innerText = data.credits;
+                const userCoins = document.getElementById('user-coins');
+                if (userCoins) userCoins.innerText = data.credits;
                 alert('1000 créditos adicionados com sucesso!');
             } else {
                 alert('Erro ao adicionar créditos: ' + (data.error || 'Erro desconhecido'));

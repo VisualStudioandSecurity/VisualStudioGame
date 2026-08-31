@@ -31477,33 +31477,56 @@
 <!doctype html>
 <html lang="pt-BR" class="h-full">
  <head>
+<!-- 1. Import do SDK do Google -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<!-- 2. Botão do Google no HTML -->
 <div id="g_id_onload"
      data-client_id="1056756025173-svte8g5subniiocusau7umuhng53k5od.apps.googleusercontent.com"
      data-callback="handleCredentialResponse">
 </div>
 <div class="g_id_signin" data-type="standard" data-theme="dark" data-size="large"></div>
-  
+
+<!-- 3. Lógica do JavaScript (Fora de qualquer tag visual) -->
 <script>
-  const API_URL = 'https://fuzzy-pancake-jjj5j6xjp9x6fqvr-3000.app.github.dev';
+  window.googleToken = null;
 
   function handleCredentialResponse(response) {
     window.googleToken = response.credential;
     const responsePayload = parseJwt(response.credential);
 
-    const gOnload = document.getElementById('g_id_onload');
-    if (gOnload) gOnload.style.display = 'none';
+    console.log("Login realizado para:", responsePayload.name);
+    alert(`Logado com sucesso como ${responsePayload.name}`);
+  }
 
-    const gSignin = document.querySelector('.g_id_signin');
-    if (gSignin) gSignin.style.display = 'none';
+  async function addCredits() {
+    if (!window.googleToken) {
+      alert("Por favor, faça login com o Google primeiro.");
+      return;
+    }
 
-    const userInfo = document.getElementById('user-info');
-    if (userInfo) userInfo.style.display = 'block';
+    const API_URL = 'https://fuzzy-pancake-jjj5j6xjp9x6fqvr-3000.app.github.dev';
 
-    const userName = document.getElementById('user-name');
-    if (userName) userName.innerText = responsePayload.name;
+    try {
+      const res = await fetch(`${API_URL}/api/credits/reward-ad`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${window.googleToken}`
+        }
+      });
 
-    console.log("Login realizado com sucesso para:", responsePayload.name);
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        alert(`Créditos adicionados! Novo saldo: ${data.newBalance}`);
+      } else {
+        alert(`Erro do servidor: ${data.error || 'Falha ao processar'}`);
+      }
+    } catch (err) {
+      console.error("Erro na requisição:", err);
+      alert("Servidor backend offline ou URL incorreta.");
+    }
   }
 
   function parseJwt(token) {
@@ -31514,8 +31537,6 @@
     }).join(''));
     return JSON.parse(jsonPayload);
   }
-
-</script>
 </script>
   <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">

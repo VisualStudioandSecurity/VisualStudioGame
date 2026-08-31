@@ -151809,7 +151809,7 @@ v
 
 <!doctype html>
 <html lang="pt-BR" class="h-full">
- <head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Color Crush</title>
@@ -151820,7 +151820,13 @@ v
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; overflow: hidden; }
-    body { font-family: 'Fredoka', sans-serif; }
+    body { 
+      font-family: 'Fredoka', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
 
     .cell {
       border-radius: 8px;
@@ -151872,78 +151878,316 @@ v
     }
     .glow { box-shadow: 0 0 20px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.2); }
   </style>
-  <style>
-    body { 
-      box-sizing: border-box; 
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-    }
-    * {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-  </style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="grid-bg h-full">
+</head>
+<body class="grid-bg h-full">
   <div id="app" class="h-full flex flex-col items-center justify-center p-3 overflow-auto w-full">
-   <!-- Header -->
-   <div class="w-full max-w-md mb-3">
-    <h1 id="title" class="text-3xl font-bold text-white text-center mb-2 drop-shadow-lg">🎯 Color Crush</h1>
-    <p class="text-center text-sm text-purple-200 mb-3">Elimine grupos de 3+ blocos coloridos!</p>
-    <div class="flex justify-between items-center bg-white/10 backdrop-blur rounded-xl px-4 py-2 glow">
-     <div class="text-center">
-      <div class="text-xs text-purple-300 uppercase tracking-wider">
-       Pontos
+    <!-- Header -->
+    <div class="w-full max-w-md mb-3">
+      <h1 id="title" class="text-3xl font-bold text-white text-center mb-2 drop-shadow-lg">🎯 Color Crush</h1>
+      <p class="text-center text-sm text-purple-200 mb-3">Elimine grupos de 3+ blocos coloridos!</p>
+      <div class="flex justify-between items-center bg-white/10 backdrop-blur rounded-xl px-4 py-2 glow">
+        <div class="text-center">
+          <div class="text-xs text-purple-300 uppercase tracking-wider">Pontos</div>
+          <div id="score" class="text-2xl font-bold text-white">0</div>
+        </div>
+        <div class="text-center">
+          <div class="text-xs text-purple-300 uppercase tracking-wider">Combo</div>
+          <div id="combo" class="text-2xl font-bold text-yellow-300">x1</div>
+        </div>
+        <div class="text-center">
+          <div class="text-xs text-purple-300 uppercase tracking-wider">Recorde</div>
+          <div id="best" class="text-2xl font-bold text-emerald-300">0</div>
+        </div>
+        <div class="text-center">
+          <div class="text-xs text-purple-300 uppercase tracking-wider">Jogadas</div>
+          <div id="moves" class="text-2xl font-bold text-rose-300">30</div>
+        </div>
       </div>
-      <div id="score" class="text-2xl font-bold text-white">
-       0
-      </div>
-     </div>
-     <div class="text-center">
-      <div class="text-xs text-purple-300 uppercase tracking-wider">
-       Combo
-      </div>
-      <div id="combo" class="text-2xl font-bold text-yellow-300">
-       x1
-      </div>
-     </div>
-     <div class="text-center">
-      <div class="text-xs text-purple-300 uppercase tracking-wider">
-       Recorde
-      </div>
-      <div id="best" class="text-2xl font-bold text-emerald-300">
-       0
-      </div>
-     </div>
-     <div class="text-center">
-      <div class="text-xs text-purple-300 uppercase tracking-wider">
-       Jogadas
-      </div>
-      <div id="moves" class="text-2xl font-bold text-rose-300">
-       30
-      </div>
-     </div>
     </div>
-   </div><!-- Game Grid -->
-   <div id="grid" class="grid gap-1 w-full max-w-md" style="grid-template-columns: repeat(8, 1fr);"></div><!-- Restart --> <button id="restartBtn" class="mt-3 bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-6 rounded-xl transition-colors shadow-lg"> <i data-lucide="refresh-cw" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Reiniciar </button> <!-- Game Over Overlay -->
-   <div id="gameOver" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-    <div class="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-8 text-center max-w-xs mx-4 glow">
-     <h2 class="text-3xl font-bold text-white mb-2">Fim de Jogo!</h2>
-     <p class="text-purple-200 mb-1">Sua pontuação:</p>
-     <div id="finalScore" class="text-5xl font-bold text-yellow-300 mb-4">
-      0
-     </div>
-     <p id="newRecord" class="hidden text-emerald-300 font-bold mb-4 text-lg">🏆 Novo Recorde!</p><button id="playAgain" class="bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-bold py-3 px-8 rounded-xl transition-colors text-lg shadow-lg"> Jogar Novamente </button>
+
+    <!-- Game Grid -->
+    <div id="grid" class="grid gap-1 w-full max-w-md" style="grid-template-columns: repeat(8, 1fr);"></div>
+
+    <!-- Restart -->
+    <button id="restartBtn" class="mt-3 bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-6 rounded-xl transition-colors shadow-lg">
+      <i data-lucide="refresh-cw" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Reiniciar
+    </button>
+
+    <!-- Game Over Overlay -->
+    <div id="gameOver" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div class="bg-gradient-to-br from-purple-900 to-indigo-900 rounded-2xl p-8 text-center max-w-xs mx-4 glow">
+        <h2 class="text-3xl font-bold text-white mb-2">Fim de Jogo!</h2>
+        <p class="text-purple-200 mb-1">Sua pontuação:</p>
+        <div id="finalScore" class="text-5xl font-bold text-yellow-300 mb-4">0</div>
+        <p id="newRecord" class="hidden text-emerald-300 font-bold mb-4 text-lg">🏆 Novo Recorde!</p>
+        <button id="playAgain" class="bg-yellow-400 hover:bg-yellow-300 text-purple-900 font-bold py-3 px-8 rounded-xl transition-colors text-lg shadow-lg">
+          Jogar Novamente
+        </button>
+      </div>
     </div>
-   </div>
   </div>
+
   <script>
-(function(){const _0x4a2c=['#ef4444','#3b82f6','#22c55e','#eab308','#a855f7','#f97316','grid','score','combo','best','moves','colorcrush_best','cell','click','gameOver','hidden','finalScore','newRecord','restartBtn','playAgain','🎯\x20Color\x20Crush','#302b63','#ffffff','#a855f7','#1a1640','#eab308','title','background','text-white','elementSdk','defaultConfig','title_text','background_color','text_color','accent_color','surface_color','action_color','backgroundColor','createElement','div','className','aspectRatio','inset\x200\x202px\x204px\x20rgba(255,255,255,0.3),\x20inset\x200\x20-2px\x204px\x20rgba(0,0,0,0.2)','dataset','appendChild','lucide','pop','fall','shake','combo-text','classList'];(function(_0x2c2a6b){let _0x3c4e4f=function(_0x10fe91){while(--_0x10fe91){_0x2c2a6b['push'](_0x2c2a6b['shift']());}};_0x3c4e4f(++_0x10fe91);}(_0x4a2c['length']/0x2));const _0x2c20=function(_0x4a2c9d,_0x2c2a6b){const _0x3c4e4f=_0x4a2c9d();while(true){try{const _0x10fe91=-parseInt(_0x2c2a6b(0x83))/0x1*(-parseInt(_0x2c2a6b(0x1a))/0x2)+-parseInt(_0x2c2a6b(0x1f))/0x3*(parseInt(_0x2c2a6b(0x35))/0x4)+parseInt(_0x2c2a6b(0x4e))/0x5+parseInt(_0x2c2a6b(0x51))/0x6*(parseInt(_0x2c2a6b(0x4f))/0x7)+-parseInt(_0x2c2a6b(0x3f))/0x8+parseInt(_0x2c2a6b(0x4c))/0x9+parseInt(_0x2c2a6b(0x3e))/0xa;if(_0x10fe91===_0x2c2a6b(0x76))break;_0x3c4e4f['push'](_0x3c4e4f['shift']());}catch(_0x2d4aaa){_0x3c4e4f['push'](_0x3c4e4f['shift']());}}};let _0x4bf78d=0x8,_0x35f41d=0x8,_0x1e8ba6=0x1e,_0x5c6263=[],_0x3d8c2f=0x0,_0x25e4ba=0x1,_0xaabf1c=_0x1e8ba6,_0x18bdc3=0x0,_0x22c90e=0x0;const _0x1ab2eb=_0x1e51c7=>document['getElementById'](_0x1e51c7),_0x2f7848=_0x1ab2eb('grid'),_0x3de5ee=_0x1ab2eb('score'),_0x4b1cd0=_0x1ab2eb('combo'),_0x35277c=_0x1ab2eb('best'),_0x28d02d=_0x1ab2eb('moves');_0x18bdc3=parseInt(localStorage['getItem']('colorcrush_best')||'0'),_0x35277c['textContent']=_0x18bdc3;const _0x4fc3f7=()=>_0x4a2c[Math['floor'](Math['random']()*_0x4a2c['length'])],_0x44151e=async()=>{_0x5c6263=[],_0x3d8c2f=0x0,_0x25e4ba=0x1,_0xaabf1c=_0x1e8ba6;for(let _0x3a7bb0=0x0;_0x3a7bb0<_0x4bf78d;_0x3a7bb0++){_0x5c6263[_0x3a7bb0]=[];for(let _0x1efee5=0x0;_0x1efee5<_0x35f41d;_0x1efee5++){_0x5c6263[_0x3a7bb0][_0x1efee5]=_0x4fc3f7();}}};_0x44151e();const _0x574cf2=()=>{_0x3de5ee['textContent']='0',_0x4b1cd0['textContent']='x1',_0x28d02d['textContent']=_0x1e8ba6,_0x1ab2eb('gameOver')['classList']['add']('hidden'),_0x28cc7e();},_0x28cc7e=()=>{_0x2f7848['innerHTML']='';for(let _0x3a7bb0=0x0;_0x3a7bb0<_0x4bf78d;_0x3a7bb0++){for(let _0x1efee5=0x0;_0x1efee5<_0x35f41d;_0x1efee5++){const _0x28c33f=document['createElement']('div');_0x28c33f['className']='cell',_0x28c33f['style']['backgroundColor']=_0x5c6263[_0x3a7bb0][_0x1efee5],_0x28c33f['style']['aspectRatio']='1',_0x28c33f['style']['boxShadow']=`inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)`,_0x28c33f['dataset']['r']=_0x3a7bb0,_0x28c33f['dataset']['c']=_0x1efee5,_0x28c33f['addEventListener']('click',()=>_0x25a9ba(_0x3a7bb0,_0x1efee5)),_0x2f7848['appendChild'](_0x28c33f);}}},_0x47cbce=(_0x5b6c6b,_0x2b206b,_0x33ddde,_0x446f39)=>{if(_0x5b6c6b<0x0||_0x5b6c6b>=_0x4bf78d||_0x2b206b<0x0||_0x2b206b>=_0x35f41d)return[];const _0x238b2b=`${_0x5b6c6b},${_0x2b206b}`;if(_0x446f39['has'](_0x238b2b))return[];if(_0x5c6263[_0x5b6c6b][_0x2b206b]!==_0x33ddde)return[];_0x446f39['add'](_0x238b2b);let _0x3c8f26=[{'r':_0x5b6c6b,'c':_0x2b206b}];return _0x3c8f26=_0x3c8f26['concat'](_0x47cbce(_0x5b6c6b-0x1,_0x2b206b,_0x33ddde,_0x446f39)),_0x3c8f26=_0x3c8f26['concat'](_0x47cbce(_0x5b6c6b+0x1,_0x2b206b,_0x33ddde,_0x446f39)),_0x3c8f26=_0x3c8f26['concat'](_0x47cbce(_0x5b6c6b,_0x2b206b-0x1,_0x33ddde,_0x446f39)),_0x3c8f26=_0x3c8f26['concat'](_0x47cbce(_0x5b6c6b,_0x2b206b+0x1,_0x33ddde,_0x446f39)),_0x3c8f26;},_0x2d5c29=(_0x3e6f56,_0x2e96d6,_0x30fb83)=>{const _0x2f7976=_0x2f7848['children'][_0x2e96d6*_0x35f41d+_0x30fb83];if(!_0x2f7976)return;const _0x5c1e1c=_0x2f7976['getBoundingClientRect'](),_0x25c0ac=document['createElement']('div');_0x25c0ac['className']='score-float',_0x25c0ac['textContent']=`+${_0x3e6f56}`,_0x25c0ac['style']['left']=_0x5c1e1c['left']+_0x5c1e1c['width']/0x2-0x14+'px',_0x25c0ac['style']['top']=_0x5c1e1c['top']+'px',_0x25c0ac['style']['fontSize']=_0x3e6f56>0x32?'28px':'20px',document['body']['appendChild'](_0x25c0ac),setTimeout(()=>_0x25c0ac['remove'](),0x320);},_0x25a9ba=async(_0x58a0f9,_0x1c11b8)=>{if(_0x22c90e||_0xaabf1c<=0x0)return;const _0x5ef0cf=_0x5c6263[_0x58a0f9][_0x1c11b8];if(!_0x5ef0cf)return;const _0x10c7e2=_0x47cbce(_0x58a0f9,_0x1c11b8,_0x5ef0cf,new Set());if(_0x10c7e2['length']<0x3){const _0x1a1f2b=_0x2f7848['children'][_0x58a0f9*_0x35f41d+_0x1c11b8];return _0x1a1f2b&&(_0x1a1f2b['classList']['add']('shake'),setTimeout(()=>_0x1a1f2b['classList']['remove']('shake'),0x12c)),!0x0;}_0x22c90e=0x1,_0xaabf1c--,_0x28d02d['textContent']=_0xaabf1c;const _0x2fb49a=_0x10c7e2['length']*0xa*_0x25e4ba;_0x3d8c2f+=_0x2fb49a,_0x3de5ee['textContent']=_0x3d8c2f,_0x3de5ee['parentElement']['classList']['add']('pulse'),setTimeout(()=>_0x3de5ee['parentElement']['classList']['remove']('pulse'),0x190);const _0x4b1521=_0x10c7e2[Math['floor'](_0x10c7e2['length']/0x2)];_0x2d5c29(_0x2fb49a,_0x4b1521['r'],_0x4b1521['c']),_0x10c7e2['length']>=0x5?(_0x25e4ba++,_0x4b1cd0['textContent']=`x${_0x25e4ba}`,_0x4b1cd0['classList']['remove']('combo-text'),void _0x4b1cd0['offsetWidth'],_0x4b1cd0['classList']['add']('combo-text')):(_0x25e4ba=0x1,_0x4b1cd0['textContent']='x1'),_0x10c7e2['forEach'](({r:_0x28e6b7,c:_0x1efee5})=>{const _0x383d80=_0x28e6b7*_0x35f41d+_0x1efee5;_0x2f7848['children'][_0x383d80]&&_0x2f7848['children'][_0x383d80]['classList']['add']('pop');}),await new Promise(_0x2bb3fc=>setTimeout(_0x2bb3fc,0x12c)),_0x10c7e2['forEach'](({r:_0x28e6b7,c:_0x1efee5})=>{_0x5c6263[_0x28e6b7][_0x1efee5]=null;});for(let _0x1efee5=0x0;_0x1efee5<_0x35f41d;_0x1efee5++){let _0x3c8f26=[];for(let _0x28e6b7=_0x4bf78d-0x1;_0x28e6b7>=0x0;_0x28e6b7--){_0x5c6263[_0x28e6b7][_0x1efee5]?_0x3c8f26['length']>0x0&&(_0x5c6263[_0x3c8f26[0x0]][_0x1efee5]=_0x5c6263[_0x28e6b7][_0x1efee5],_0x5c6263[_0x28e6b7][_0x1efee5]=null,_0x3c8f26['shift'](),_0x3c8f26['push'](_0x28e6b7)):_0x3c8f26['push'](_0x28e6b7);}for(const _0x28e6b7 of _0x3c8f26){_0x5c6263[_0x28e6b7][_0x1efee5]=_0x4fc3f7();}}await new Promise(_0x2bb3fc=>setTimeout(_0x2bb3fc,0x104)),_0x28cc7e(),_0x2f7848['querySelectorAll']('.cell')['forEach'](_0x28c33f=>{_0x28c33f['classList']['add']('fall'),setTimeout(()=>_0x28c33f['classList']['remove']('fall'),0xfa);}),await new Promise(_0x2bb3fc=>setTimeout(_0x2bb3fc,0x104)),_0x22c90e=0x1,_0xaabf1c<=0x0&&setTimeout(_0x3b4b1d,0x12c);},_0x3b4b1d=()=>{_0x1ab2eb('finalScore')['textContent']=_0x3d8c2f,_0x3d8c2f>_0x18bdc3?(_0x18bdc3=_0x3d8c2f,localStorage['setItem']('colorcrush_best',_0x18bdc3),_0x35277c['textContent']=_0x18bdc3,_0x1ab2eb('newRecord')['classList']['remove']('hidden')):_0x1ab2eb('newRecord')['classList']['add']('hidden'),_0x1ab2eb('gameOver')['classList']['remove']('hidden');};_0x1ab2eb('restartBtn')['addEventListener']('click',()=>{_0x3d8c2f=0x0,_0x25e4ba=0x1,_0xaabf1c=_0x1e8ba6,_0x22c90e=0x1,_0x44151e(),_0x574cf2()}),_0x1ab2eb('playAgain')['addEventListener']('click',()=>{_0x3d8c2f=0x0,_0x25e4ba=0x1,_0xaabf1c=_0x1e8ba6,_0x22c90e=0x1,_0x44151e(),_0x574cf2()});const _0x4d3e5a={'title_text':'🎯\x20Color\x20Crush','background_color':'#302b63','text_color':'#ffffff','accent_color':'#a855f7','surface_color':'#1a1640','action_color':'#eab308'};window['elementSdk']['init']({'defaultConfig':_0x4d3e5a,'onConfigChange':async _0x4b9263=>{const _0x12c9fa=_0x4b9263['title_text']||_0x4d3e5a['title_text'];_0x1ab2eb('title')['textContent']=_0x12c9fa,document['body']['style']['background']=`linear-gradient(135deg, #0f0c29 0%, ${_0x4b9263['background_color']||_0x4d3e5a['background_color']} 50%, #24243e 100%)`,document['querySelectorAll']('.text-white, h1')['forEach'](_0x1a1f2b=>{('title'===_0x1a1f2b['id']||'score'===_0x1a1f2b['id'])&&(_0x1a1f2b['style']['color']=_0x4b9263['text_color']||_0x4d3e5a['text_color']);}),_0x1ab2eb('restartBtn')['style']['backgroundColor']=_0x4b9263['accent_color']||_0x4d3e5a['accent_color'],_0x4b1cd0['style']['color']=_0x4b9263['action_color']||_0x4d3e5a['action_color'];},'mapToCapabilities':_0x4b9263=>({'recolorables':[{'get':()=>_0x4b9263['background_color']||_0x4d3e5a['background_color'],'set':_0x2ff0f5=>{_0x4b9263['background_color']=_0x2ff0f5,window['elementSdk']['setConfig']({'background_color':_0x2ff0f5});}},{'get':()=>_0x4b9263['surface_color']||_0x4d3e5a['surface_color'],'set':_0x2ff0f5=>{_0x4b9263['surface_color']=_0x2ff0f5,window['elementSdk']['setConfig']({'surface_color':_0x2ff0f5});}},{'get':()=>_0x4b9263['text_color']||_0x4d3e5a['text_color'],'set':_0x2ff0f5=>{_0x4b9263['text_color']=_0x2ff0f5,window['elementSdk']['setConfig']({'text_color':_0x2ff0f5});}},{'get':()=>_0x4b9263['accent_color']||_0x4d3e5a['accent_color'],'set':_0x2ff0f5=>{_0x4b9263['accent_color']=_0x2ff0f5,window['elementSdk']['setConfig']({'accent_color':_0x2ff0f5});}},{'get':()=>_0x4b9263['action_color']||_0x4d3e5a['action_color'],'set':_0x2ff0f5=>{_0x4b9263['action_color']=_0x2ff0f5,window['elementSdk']['setConfig']({'action_color':_0x2ff0f5});}}],'borderables':[],'fontEditable':undefined,'fontSizeable':undefined}),'mapToEditPanelValues':_0x4b9263=>new Map([['title_text',_0x4b9263['title_text']||_0x4d3e5a['title_text']]])});_0x44151e(),_0x574cf2(),lucide['createIcons'](),document['addEventListener']('copy',_0x2c4b49=>_0x2c4b49['preventDefault']()),document['addEventListener']('cut',_0x2c4b49=>_0x2c4b49['preventDefault']()),document['addEventListener']('contextmenu',_0x2c4b49=>_0x2c4b49['preventDefault']()),document['addEventListener']('dragstart',_0x2c4b49=>_0x2c4b49['preventDefault']()),document['addEventListener']('selectstart',_0x2c4b49=>_0x2c4b49['preventDefault']()),document['addEventListener']('keydown',_0x2c4b49=>{(_0x2c4b49['ctrlKey']||_0x2c4b49['metaKey'])&&('c'===_0x2c4b49['key']||'C'===_0x2c4b49['key']||'x'===_0x2c4b49['key']||'X'===_0x2c4b49['key'])&&_0x2c4b49['preventDefault'](),('F12'===_0x2c4b49['key']||_0x2c4b49['ctrlKey']&&_0x2c4b49['shiftKey']&&'I'===_0x2c4b49['key'])&&_0x2c4b49['preventDefault']();}),window['oncontextmenu']=()=>!1;})();
+  document.addEventListener('DOMContentLoaded', () => {
+    const COLORS = ['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#a855f7', '#f97316'];
+    const ROWS = 8;
+    const COLS = 8;
+    const MAX_MOVES = 30;
+
+    let board = [];
+    let score = 0;
+    let combo = 1;
+    let movesLeft = MAX_MOVES;
+    let highScore = parseInt(localStorage.getItem('colorcrush_best') || '0', 10);
+    let isBusy = false;
+
+    const gridEl = document.getElementById('grid');
+    const scoreEl = document.getElementById('score');
+    const comboEl = document.getElementById('combo');
+    const bestEl = document.getElementById('best');
+    const movesEl = document.getElementById('moves');
+    const gameOverEl = document.getElementById('gameOver');
+    const finalScoreEl = document.getElementById('finalScore');
+    const newRecordEl = document.getElementById('newRecord');
+    const restartBtn = document.getElementById('restartBtn');
+    const playAgainBtn = document.getElementById('playAgain');
+    const titleEl = document.getElementById('title');
+
+    bestEl.textContent = highScore;
+
+    function getRandomColor() {
+      return COLORS[Math.floor(Math.random() * COLORS.length)];
+    }
+
+    function initBoardData() {
+      board = [];
+      for (let r = 0; r < ROWS; r++) {
+        board[r] = [];
+        for (let c = 0; c < COLS; c++) {
+          board[r][c] = getRandomColor();
+        }
+      }
+    }
+
+    function renderGrid() {
+      gridEl.innerHTML = '';
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.style.backgroundColor = board[r][c];
+          cell.style.aspectRatio = '1';
+          cell.style.boxShadow = 'inset 0 2px 4px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.2)';
+          cell.dataset.r = r;
+          cell.dataset.c = c;
+          cell.addEventListener('click', () => handleCellClick(r, c));
+          gridEl.appendChild(cell);
+        }
+      }
+    }
+
+    function getConnectedGroup(r, c, color, visited = new Set()) {
+      if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return [];
+      const key = `${r},${c}`;
+      if (visited.has(key)) return [];
+      if (board[r][c] !== color) return [];
+
+      visited.add(key);
+      let group = [{ r, c }];
+
+      group = group.concat(getConnectedGroup(r - 1, c, color, visited));
+      group = group.concat(getConnectedGroup(r + 1, c, color, visited));
+      group = group.concat(getConnectedGroup(r, c - 1, color, visited));
+      group = group.concat(getConnectedGroup(r, c + 1, color, visited));
+
+      return group;
+    }
+
+    function showFloatingScore(points, r, c) {
+      const index = r * COLS + c;
+      const cellEl = gridEl.children[index];
+      if (!cellEl) return;
+
+      const rect = cellEl.getBoundingClientRect();
+      const floatEl = document.createElement('div');
+      floatEl.className = 'score-float';
+      floatEl.textContent = `+${points}`;
+      floatEl.style.left = `${rect.left + rect.width / 2 - 20}px`;
+      floatEl.style.top = `${rect.top}px`;
+      floatEl.style.fontSize = points > 50 ? '28px' : '20px';
+      document.body.appendChild(floatEl);
+
+      setTimeout(() => floatEl.remove(), 800);
+    }
+
+    async function handleCellClick(r, c) {
+      if (isBusy || movesLeft <= 0) return;
+
+      const color = board[r][c];
+      if (!color) return;
+
+      const group = getConnectedGroup(r, c, color, new Set());
+
+      if (group.length < 3) {
+        const index = r * COLS + c;
+        const cellEl = gridEl.children[index];
+        if (cellEl) {
+          cellEl.classList.add('shake');
+          setTimeout(() => cellEl.classList.remove('shake'), 300);
+        }
+        return;
+      }
+
+      isBusy = true;
+      movesLeft--;
+      movesEl.textContent = movesLeft;
+
+      if (group.length >= 5) {
+        combo++;
+        comboEl.textContent = `x${combo}`;
+        comboEl.classList.remove('combo-text');
+        void comboEl.offsetWidth;
+        comboEl.classList.add('combo-text');
+      } else {
+        combo = 1;
+        comboEl.textContent = 'x1';
+      }
+
+      const points = group.length * 10 * combo;
+      score += points;
+      scoreEl.textContent = score;
+      scoreEl.parentElement.classList.add('pulse');
+      setTimeout(() => scoreEl.parentElement.classList.remove('pulse'), 400);
+
+      const centerCell = group[Math.floor(group.length / 2)];
+      showFloatingScore(points, centerCell.r, centerCell.c);
+
+      group.forEach(({ r: gr, c: gc }) => {
+        const idx = gr * COLS + gc;
+        if (gridEl.children[idx]) {
+          gridEl.children[idx].classList.add('pop');
+        }
+      });
+
+      await new Promise(res => setTimeout(res, 300));
+
+      group.forEach(({ r: gr, c: gc }) => {
+        board[gr][gc] = null;
+      });
+
+      for (let cCol = 0; cCol < COLS; cCol++) {
+        let emptyRows = [];
+        for (let rRow = ROWS - 1; rRow >= 0; rRow--) {
+          if (board[rRow][cCol] !== null) {
+            if (emptyRows.length > 0) {
+              board[emptyRows[0]][cCol] = board[rRow][cCol];
+              board[rRow][cCol] = null;
+              emptyRows.shift();
+              emptyRows.push(rRow);
+            }
+          } else {
+            emptyRows.push(rRow);
+          }
+        }
+        for (const emptyR of emptyRows) {
+          board[emptyR][cCol] = getRandomColor();
+        }
+      }
+
+      await new Promise(res => setTimeout(res, 260));
+
+      renderGrid();
+
+      gridEl.querySelectorAll('.cell').forEach(cell => {
+        cell.classList.add('fall');
+        setTimeout(() => cell.classList.remove('fall'), 250);
+      });
+
+      await new Promise(res => setTimeout(res, 260));
+
+      isBusy = false;
+
+      if (movesLeft <= 0) {
+        setTimeout(endGame, 300);
+      }
+    }
+
+    function endGame() {
+      finalScoreEl.textContent = score;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('colorcrush_best', highScore);
+        bestEl.textContent = highScore;
+        newRecordEl.classList.remove('hidden');
+      } else {
+        newRecordEl.classList.add('hidden');
+      }
+      gameOverEl.classList.remove('hidden');
+    }
+
+    function resetGame() {
+      score = 0;
+      combo = 1;
+      movesLeft = MAX_MOVES;
+      isBusy = false;
+      scoreEl.textContent = '0';
+      comboEl.textContent = 'x1';
+      movesEl.textContent = MAX_MOVES;
+      gameOverEl.classList.add('hidden');
+      initBoardData();
+      renderGrid();
+    }
+
+    restartBtn.addEventListener('click', resetGame);
+    playAgainBtn.addEventListener('click', resetGame);
+
+    resetGame();
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+
+    const defaultConfig = {
+      title_text: '🎯 Color Crush',
+      background_color: '#302b63',
+      text_color: '#ffffff',
+      accent_color: '#a855f7',
+      surface_color: '#1a1640',
+      action_color: '#eab308'
+    };
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          const titleText = config.title_text || defaultConfig.title_text;
+          if (titleEl) titleEl.textContent = titleText;
+          document.body.style.background = `linear-gradient(135deg, #0f0c29 0%, ${config.background_color || defaultConfig.background_color} 50%, #24243e 100%)`;
+          if (restartBtn) restartBtn.style.backgroundColor = config.accent_color || defaultConfig.accent_color;
+          if (comboEl) comboEl.style.color = config.action_color || defaultConfig.action_color;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            { get: () => config.background_color || defaultConfig.background_color, set: (val) => { config.background_color = val; window.elementSdk.setConfig({ background_color: val }); } },
+            { get: () => config.surface_color || defaultConfig.surface_color, set: (val) => { config.surface_color = val; window.elementSdk.setConfig({ surface_color: val }); } },
+            { get: () => config.text_color || defaultConfig.text_color, set: (val) => { config.text_color = val; window.elementSdk.setConfig({ text_color: val }); } },
+            { get: () => config.accent_color || defaultConfig.accent_color, set: (val) => { config.accent_color = val; window.elementSdk.setConfig({ accent_color: val }); } },
+            { get: () => config.action_color || defaultConfig.action_color, set: (val) => { config.action_color = val; window.elementSdk.setConfig({ action_color: val }); } }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([['title_text', config.title_text || defaultConfig.title_text]])
+      });
+    }
+
+    document.addEventListener('copy', (e) => e.preventDefault());
+    document.addEventListener('cut', (e) => e.preventDefault());
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('dragstart', (e) => e.preventDefault());
+    document.addEventListener('selectstart', (e) => e.preventDefault());
+  });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ee92056a0d777ed',t:'MTc3NjU3MjUyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>

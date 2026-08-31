@@ -29,7 +29,7 @@ async function verifyGoogleToken(req, res, next) {
     try {
         const ticket = await client.verifyIdToken({
             idToken: token,
-            audience: 'SEU_CLIENT_ID_DO_GOOGLE.apps.googleusercontent.com'
+            audience: 'S1056756025173-svte8g5subniiocusau7umuhng53k5od.apps.googleusercontent.com'
         });
         req.user = ticket.getPayload(); // Dados do usuário validados pelo Google
         next();

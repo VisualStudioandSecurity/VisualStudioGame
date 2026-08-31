@@ -31520,33 +31520,6 @@
 
   // Mantenha a função addCredits() abaixo...
 </script>
-
-    async function addCredits() {
-        if (!window.googleToken) {
-            alert('Por favor, faça login com o Google primeiro.');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_URL}/api/credits`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: window.googleToken, amount: 1000 })
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                const userCoins = document.getElementById('user-coins');
-                if (userCoins) userCoins.innerText = data.credits;
-                alert('1000 créditos adicionados com sucesso!');
-            } else {
-                alert('Erro ao adicionar créditos: ' + (data.error || 'Erro desconhecido'));
-            }
-        } catch (error) {
-            console.error('Erro de conexão:', error);
-            alert('Não foi possível conectar ao servidor no Codespaces.');
-        }
-    }
 </script>
   <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
